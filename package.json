@@ -1,0 +1,26 @@
+{
+  "name": "testautomation",
+  "version": "1.0.0",
+  "description": "pakeitimas kazkoks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JonasArmalis/testautomation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JonasArmalis/testautomation/issues"
+  },
+  "homepage": "https://github.com/JonasArmalis/testautomation#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.13.1"
+  },
+  "dependencies": {
+    "experimental-allure-playwright": "0.0.3"
+  }
+}
