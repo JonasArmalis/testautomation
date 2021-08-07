@@ -4,12 +4,13 @@ exports.DuckStartPage = class DuckStartPage {
     }
 
     async goto() {
-        await this.page.goto('https://start/duckduckgo.com/');
+        await this.page.goto('https://start.duckduckgo.com/');
     }
 
-    async initiateSearch (searchCriteria) {
+    async initiateSearch(searchCriteria) {
         await this.page.fill('#search_form_input_homepage', searchCriteria);
         await this.page.click('#search_button_homepage');
+        await this.page.waitForNavigation();
     }
 
 }
