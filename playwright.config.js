@@ -6,7 +6,7 @@ const config = {
       headless: false,
       screenshot: 'off',
       viewport: { width: 1280, height: 720 },
-      //launchOptions: { slowMo: 100}
+      //launchOptions: { slowMo: 750}
     },
   };
   
