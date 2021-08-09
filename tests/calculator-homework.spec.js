@@ -3,7 +3,6 @@ const { calculatorPage } = require('../pages/calculatorpage');
 
 //Now only the prototype build is selected and all test run fluently.
 //Other builds can be uncommented to run tests too.
-//When run on all builds 49/150 fail
 const builds = ['Prototype', /*'1', '2', '3', '4', '5', '6', '7', '8', '9'*/];
 builds.forEach(build => {
   test.describe('Calculator test suite', () => {
@@ -27,15 +26,10 @@ builds.forEach(build => {
       [2.5, 3.8] // === 6.3   /// Non integer answer
     ];
     AdditionNums.forEach(num => {
-      test.only(`${build} build's Addition test ${num[0]} + ${num[1]}`, async () => {
+      test(`${build} build's Addition test ${num[0]} + ${num[1]}`, async () => {
         await calcPage.initOperation(num[0], num[1], 'Add')
         let answer = await calcPage.getAnswer();
         expect(answer).toEqual(`${num[0] + num[1]}`);
-
-        //tests the Integer Only box
-        await calcPage.checkIntegerBox();
-        answer = await calcPage.getAnswer();
-        expect(answer).toEqual(`${(num[0] + num[1]).toFixed(0)}`);
       });
     });
 
@@ -64,7 +58,7 @@ builds.forEach(build => {
     ];
 
     MultiplicationNums.forEach(num => {
-      test.only(`${build} build's Multiplication test ${num[0]} * ${num[1]}`, async () => {
+      test(`${build} build's Multiplication test ${num[0]} * ${num[1]}`, async () => {
         await calcPage.initOperation(num[0], num[1], 'Multiply');
         const answer = await calcPage.getAnswer();
         expect(answer).toEqual(`${num[0] * num[1]}`);
@@ -93,11 +87,19 @@ builds.forEach(build => {
       });
     });
 
-    test(`${build} Concatination test`, async () => {
-      await calcPage.initOperation(5.85, 0, 'Concatenate');
-      const answer = await calcPage.getAnswer();
-      expect(answer).toEqual('5.850');
+
+    const ConcatinationStrings = [
+      ['-5', '+10'],      //With numbers
+      ['abcd', 'efg#<>']  //With other characters
+    ];
+    ConcatinationStrings.forEach(string => {
+      test.only(`${build} build's Concatination test ${string[0] + string[1]}`, async () => {
+        await calcPage.initOperation(string[0], string[1], 'Concatenate');
+        const answer = await calcPage.getAnswer();
+        expect(answer).toEqual(string[0] + string[1]);
+      });
     });
+
 
     //Non numerical inputs tests
     const NonNumericChars = [
@@ -106,7 +108,7 @@ builds.forEach(build => {
     ];
 
     NonNumericChars.forEach(char => {
-      test.only(`${build} Non numeric characters test ${char[0]} and ${char[1]}`, async () => {
+      test.only(`${build} build's Non numeric characters test ${char[0]} and ${char[1]}`, async () => {
         await calcPage.initOperation(char[0], char[1], 'Add');
         const error = await calcPage.getErrorMessage();
 
@@ -119,15 +121,23 @@ builds.forEach(build => {
 
 
     //Clear button test
-    test.only(`${build} Clear button test`, async () => {
+    test.only(`${build} build's Clear button test`, async () => {
       await calcPage.initOperation(2, 2, 'Add');
       let answer = await calcPage.getAnswer();
       expect(answer).toEqual('4');
-
       await calcPage.clearAnswer();
-
       answer = await calcPage.getAnswer();
       expect(answer).toEqual('');
+    });
+
+    //Integers only box test
+    test.only(`${build} build's Integers only box test`, async () => {
+      await calcPage.initOperation(4.7, 2.9, 'Add');
+      let answer = await calcPage.getAnswer();
+      expect(answer).toEqual('7.6');
+      await calcPage.checkIntegerBox();
+      answer = await calcPage.getAnswer();
+      expect(answer).toEqual('7');
     });
   });
 });
